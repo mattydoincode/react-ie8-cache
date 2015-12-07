@@ -60,7 +60,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _cache = __webpack_require__(1);
+	var _cache = __webpack_require__(2);
 
 	var _cache2 = _interopRequireDefault(_cache);
 
@@ -71,27 +71,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-
-	exports.__esModule = true;
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _reactLazyCache = __webpack_require__(5);
-
-	var _reactLazyCache2 = _interopRequireDefault(_reactLazyCache);
-
-	console.log(_reactLazyCache2['default']);
-	exports['default'] = _reactLazyCache2['default'];
-	module.exports = exports['default'];
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
 	var pSlice = Array.prototype.slice;
-	var objectKeys = __webpack_require__(4);
-	var isArguments = __webpack_require__(3);
+	var objectKeys = __webpack_require__(5);
+	var isArguments = __webpack_require__(4);
 
 	var deepEqual = module.exports = function (actual, expected, opts) {
 	  if (!opts) opts = {};
@@ -186,7 +168,114 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _deepEqual = __webpack_require__(1);
+
+	var _deepEqual2 = _interopRequireDefault(_deepEqual);
+
+	var _reactLazyCache = __webpack_require__(6);
+
+	var _reactLazyCache2 = _interopRequireDefault(_reactLazyCache);
+
+	var _detectIE8 = __webpack_require__(3);
+
+	var _detectIE82 = _interopRequireDefault(_detectIE8);
+
+	var exportedCache = _reactLazyCache2['default'];
+	if (_detectIE82['default']) {
+	  exportedCache = function (component, calculators) {
+	    var _this = this;
+
+	    var allProps = [];
+	    var cache = {};
+	    var api = {};
+
+	    var runFunc = function runFunc(props, fn, nextProps) {
+	      var params = {};
+	      if (nextProps) {
+	        params = props.map(function (prop) {
+	          return nextProps[prop] || api[prop];
+	        });
+	      } else {
+	        params = props.map(function (prop) {
+	          return component.props[prop] || api[prop];
+	        });
+	      }
+	      var value = fn.apply(undefined, params);
+	      return { value: value, props: props };
+	    };
+
+	    var uncache = function uncache(nextProps, changedProp) {
+	      Object.keys(cache).forEach(function (key) {
+	        if (~cache[key].props.indexOf(changedProp)) {
+	          var _runFunc = runFunc(calculators[key].params, calculators[key].fn, nextProps);
+
+	          var value = _runFunc.value;
+
+	          api[key] = value;
+	          uncache(key);
+	        }
+	      });
+	    };
+
+	    Object.keys(calculators).forEach(function (key) {
+	      var fn = calculators[key].fn;
+	      var props = calculators[key].params;
+	      props.forEach(function (param) {
+	        if (! ~allProps.indexOf(param)) {
+	          allProps.push(param);
+	        }
+	      });
+	      // we run it once (non lazy cache)
+	      cache[key] = runFunc(props, fn);
+	      api[key] = cache[key].value;
+	    });
+	    api.componentWillReceiveProps = function (nextProps) {
+	      var diffProps = [];
+	      allProps.forEach(function (prop) {
+	        if (!_deepEqual2['default'](component.props[prop], nextProps[prop])) {
+	          diffProps.push(prop);
+	        }
+	      });
+	      diffProps.forEach(uncache.bind(_this, nextProps));
+	    };
+	    return api;
+	  };
+	}
+
+	exports['default'] = exportedCache;
+	module.exports = exports['default'];
+
+/***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	var isNode = false;
+	var result = false;
+	if (typeof module !== 'undefined' && module.exports) {
+	  isNode = true;
+	}
+	if (!isNode && typeof document !== undefined && typeof document !== null) {
+	  var div = document.createElement('div');
+	  div.innerHTML = '<!--[if lt IE 9]><i></i><![endif]-->';
+	  result = div.getElementsByTagName('i').length === 1;
+	}
+	exports['default'] = result;
+	module.exports = exports['default'];
+
+/***/ },
+/* 4 */
 /***/ function(module, exports) {
 
 	var supportsArgumentsClass = (function(){
@@ -212,7 +301,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	exports = module.exports = typeof Object.keys === 'function'
@@ -227,7 +316,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -236,7 +325,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _lazyCache = __webpack_require__(6);
+	var _lazyCache = __webpack_require__(7);
 
 	var _lazyCache2 = _interopRequireDefault(_lazyCache);
 
@@ -244,7 +333,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = exports['default'];
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -254,7 +343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _deepEqual = __webpack_require__(2);
+	var _deepEqual = __webpack_require__(1);
 
 	var _deepEqual2 = _interopRequireDefault(_deepEqual);
 
