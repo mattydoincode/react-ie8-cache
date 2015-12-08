@@ -2,8 +2,8 @@ import deepEqual from 'deep-equal';
 import lazyCache from 'react-lazy-cache';
 import isIE8 from './detectIE8';
 let exportedCache = lazyCache;
-if(isIE8) {
-  exportedCache = function (component, calculators) {
+if (isIE8) {
+  exportedCache = function myFunc(component, calculators) {
     const allProps = [];
     const cache = {};
     const api = {};
@@ -51,7 +51,6 @@ if(isIE8) {
       diffProps.forEach(uncache.bind(this, nextProps));
     };
     return api;
-  }
+  };
 }
-
 export default exportedCache;
