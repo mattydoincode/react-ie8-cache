@@ -1,5 +1,5 @@
 {
-  "name": "react-ie8-cache",
+  "name": "react-lazy-cache",
   "description": "A utility to calculate and cache values in a react component based on props. ie8 compatible",
   "version": "0.0.1",
   "repository": {
