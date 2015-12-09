@@ -1,7 +1,8 @@
 {
-  "name": "@mark43/react-ie8-cache",
+  "name": "react-ie8-cache",
+  "publishConfig": {"registry":"https://repository.mark43.com/artifactory/api/npm/thirdparty-npm"},
   "description": "A utility to calculate and cache values in a react component based on props. ie8 compatible",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/mattydoincode/react-ie8-cache.git"
@@ -46,7 +47,6 @@
     "rimraf": "^2.4.3",
     "webpack": "^1.12.2"
   },
-  "npmName": "react-ie8-cache",
   "npmFileMap": [
     {
       "basePath": "/dist/",
